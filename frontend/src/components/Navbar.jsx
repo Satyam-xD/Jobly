@@ -1,41 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
-  const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  return (
-    <nav className="bg-blue-600 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold">Jobly</Link>
-        <div className="space-x-4">
-          <Link to="/" className="hover:underline">Home</Link>
-          <Link to="/jobs" className="hover:underline">Jobs</Link>
-
-          {currentUser ? (
-            <>
-              <Link to="/dashboard" className="hover:underline">Dashboard</Link>
-              <Link to="/messages" className="hover:underline">Messages</Link>
-              <Link to="/profile" className="hover:underline">Profile</Link>
-              <button onClick={handleLogout} className="hover:underline">Logout</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="hover:underline">Login</Link>
-              <Link to="/register" className="hover:underline">Register</Link>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
-  );
-};
+const Navbar = () => (
+  <nav className="bg-blue-600 text-white p-4 flex justify-between">
+    <div className="font-bold text-xl">Jobly</div>
+    <div className="space-x-4">
+      <Link to="/">Home</Link>
+      <Link to="/jobs">Jobs</Link>
+      <Link to="/post-job">Post Job</Link>
+      <Link to="/applications">Applications</Link>
+      <Link to="/profile">Profile</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/register">Register</Link>
+    </div>
+  </nav>
+);
 
 export default Navbar;

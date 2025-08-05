@@ -1,28 +1,12 @@
-// routes/jobs.js
-import express from 'express';
-import {
-  getAllJobs,
-  getJob,
-  createJob,
-  updateJob,
-  deleteJob,
-  getUserJobs
-} from '../controllers/jobController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import mongoose from 'mongoose';
 
-const router = express.Router();
+const jobSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  company: String,
+  location: String,
+  type: { type: String, enum: ['full-time', 'part-time', 'contract'] },
+  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+}, { timestamps: true });
 
-router.route('/')
-  .get(getAllJobs)
-  .post(protect, createJob);
-
-router.route('/:id')
-  .get(getJob)
-  .put(protect, updateJob)
-  .delete(protect, deleteJob);
-
-router.route('/user')
-  .get(protect, getUserJobs);
-
-// Make sure to use default export
-export default router;
+export default mongoose.model('Job', jobSchema);

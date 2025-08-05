@@ -1,24 +1,10 @@
-// models/User.js
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
-const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['client', 'freelancer'], default: 'client' }
+  name: String,
+  role: { type: String, enum: ['jobseeker', 'employer'], default: 'jobseeker' }
 }, { timestamps: true });
 
-UserSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
-UserSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-// This is the crucial line - must export this way for ES Modules
-const User = mongoose.model('User', UserSchema);
-export default User;
+export default mongoose.model('User', userSchema);

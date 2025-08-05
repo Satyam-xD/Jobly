@@ -1,47 +1,41 @@
+// App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Register from './pages/Register';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
 import PostJob from './pages/PostJob';
 import Applications from './pages/Applications';
-import Messages from './pages/Messages';
 import Profile from './pages/Profile';
+import Messages from './pages/Messages';
 import PrivateRoute from './components/PrivateRoute';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
     <>
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/jobs/:id" element={<JobDetails />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-          {/* Protected routes */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/applications" element={<Applications />} />
-            <Route path="/messages" element={<Messages />} />
-          </Route>
+        <Route path="/dashboard" element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        } />
 
-          {/* Client-only routes */}
-          <Route element={<PrivateRoute roles={['client']} />}>
-            <Route path="/post-job" element={<PostJob />} />
-          </Route>
-
-          {/* Fallback */}
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </main>
+        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/jobs/:id" element={<JobDetails />} />
+        <Route path="/post-job" element={<PostJob />} />
+        <Route path="/applications" element={<Applications />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/messages" element={<Messages />} />
+      </Routes>
     </>
   );
 };

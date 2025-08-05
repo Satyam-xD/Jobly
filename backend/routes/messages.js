@@ -1,11 +1,9 @@
 import express from 'express';
-import { protect } from '../middleware/authMiddleware.js';
+import { createMessage, getMessages } from '../controllers/messageController.js';
 
 const router = express.Router();
 
-router.get('/inbox', protect, (req, res) => {
-  // This route is protected, req.user is available here
-  res.json({ message: `Hello user ${req.user.id}, this is your inbox` });
-});
+router.post('/', createMessage);
+router.get('/', getMessages);
 
 export default router;

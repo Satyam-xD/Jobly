@@ -1,39 +1,16 @@
-// middleware/authMiddleware.js
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
 
-// Middleware to protect routes
-export const protect = async (req, res, next) => {
-  let token;
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) return res.status(401).json({ error: 'No token, authorization denied' });
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
-      next();
-    } catch (error) {
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  }
-
-  if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
-  }
-};
-
-// Role-based middleware
-export const requireRole = (roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: `Access denied. Requires one of: ${roles.join(', ')}`
-      });
-    }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded.id;
     next();
-  };
+  } catch (err) {
+    res.status(401).json({ error: 'Token is not valid' });
+  }
 };
+
+export default authMiddleware;

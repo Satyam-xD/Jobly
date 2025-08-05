@@ -1,14 +1,10 @@
-// routes/reviews.js
-import express from 'express';
-import { 
-  createReview, 
-  getReviewsForFreelancer 
-} from '../controllers/reviewController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import mongoose from 'mongoose';
 
-const router = express.Router();
+const reviewSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  company: String,
+  rating: { type: Number, min: 1, max: 5 },
+  comment: String
+}, { timestamps: true });
 
-router.post('/:jobId', protect, createReview);
-router.get('/freelancer/:id', getReviewsForFreelancer);
-
-export default router;
+export default mongoose.model('Review', reviewSchema);

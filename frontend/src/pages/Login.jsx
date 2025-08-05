@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,27 +18,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
-    setIsLoading(true);
 
-    try {
-      const res = await axios.post(
-        'http://localhost:5000/api/auth/login', 
-        formData,
-        {
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
+    const result = await login(formData.email, formData.password);
 
-      if (res.data.token) {
-        login(res.data.user, res.data.token);
-        navigate('/dashboard');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
-    } finally {
-      setIsLoading(false);
+    if (!result.success) {
+      setError(result.message);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -47,7 +38,7 @@ const Login = () => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
           <input
             type="email"
             name="email"
@@ -57,9 +48,9 @@ const Login = () => {
             required
           />
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Password*</label>
           <input
             type="password"
             name="password"
@@ -69,22 +60,19 @@ const Login = () => {
             required
           />
         </div>
-        
+
         <button
           type="submit"
-          disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+          disabled={loading}
+          className={`w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      
-      <div className="mt-4 text-center">
-        <p>
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
-        </p>
-      </div>
+
+      <p className="mt-4 text-center">
+        Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+      </p>
     </div>
   );
 };

@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
+  const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'client' // Default role
+    role: 'client',
+    skills: '',
+    bio: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,18 +25,16 @@ const Register = () => {
     setLoading(true);
     setError('');
 
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-      
-      if (res.data.token) {
-        login(res.data.user, res.data.token);
-        navigate('/dashboard');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
-    } finally {
-      setLoading(false);
+    const result = await register({
+      ...formData,
+      skills: formData.skills.split(',').map(skill => skill.trim())
+    });
+
+    if (!result.success) {
+      setError(result.message);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -46,7 +45,7 @@ const Register = () => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Full Name*</label>
           <input
             type="text"
             name="name"
@@ -56,9 +55,9 @@ const Register = () => {
             required
           />
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
           <input
             type="email"
             name="email"
@@ -68,48 +67,69 @@ const Register = () => {
             required
           />
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Password* (min 6 chars)</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-md"
-            minLength="6"
+            minLength={6}
             required
           />
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Register as</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Role*</label>
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-md"
+            required
           >
             <option value="client">Client</option>
             <option value="freelancer">Freelancer</option>
           </select>
         </div>
-        
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
+          <input
+            type="text"
+            name="skills"
+            value={formData.skills}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+            placeholder="e.g., JavaScript, React, Design"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+          <textarea
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+            rows="3"
+          />
+        </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+          className={`w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           {loading ? 'Registering...' : 'Register'}
         </button>
       </form>
-      
-      <div className="mt-4 text-center">
-        <p>
-          Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:underline">Login</a>
-        </p>
-      </div>
+
+      <p className="mt-4 text-center">
+        Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+      </p>
     </div>
   );
 };

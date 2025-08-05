@@ -18,10 +18,12 @@ const Navbar = () => {
         <div className="space-x-4">
           <Link to="/" className="hover:underline">Home</Link>
           <Link to="/jobs" className="hover:underline">Jobs</Link>
-          
+
           {currentUser ? (
             <>
               <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+              <Link to="/messages" className="hover:underline">Messages</Link>
+              <Link to="/profile" className="hover:underline">Profile</Link>
               <button onClick={handleLogout} className="hover:underline">Logout</button>
             </>
           ) : (

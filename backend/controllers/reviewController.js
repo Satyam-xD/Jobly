@@ -1,18 +1,28 @@
+// controllers/reviewController.js
 import Review from '../models/Review.js';
 import Job from '../models/Job.js';
 
+// @desc    Create review
+// @route   POST /api/reviews/:jobId
+// @access  Private (Client)
 export const createReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
     const jobId = req.params.jobId;
 
     const job = await Job.findById(jobId);
-    if (!job || job.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Unauthorized to review this job' });
+    if (!job) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Job not found' 
+      });
     }
 
-    if (!job.assignedFreelancer) {
-      return res.status(400).json({ message: 'No freelancer assigned to this job' });
+    if (job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Not authorized to review this job' 
+      });
     }
 
     const review = await Review.create({
@@ -20,23 +30,42 @@ export const createReview = async (req, res) => {
       client: req.user._id,
       freelancer: job.assignedFreelancer,
       rating,
-      comment,
+      comment
     });
 
-    res.status(201).json(review);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to create review', error: err.message });
+    res.status(201).json({ 
+      success: true,
+      review 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error',
+      error: error.message 
+    });
   }
 };
 
+// @desc    Get reviews for freelancer
+// @route   GET /api/reviews/freelancer/:id
+// @access  Public
 export const getReviewsForFreelancer = async (req, res) => {
   try {
     const reviews = await Review.find({ freelancer: req.params.id })
       .populate('client', 'name')
+      .populate('job', 'title')
       .sort({ createdAt: -1 });
 
-    res.json(reviews);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch reviews', error: err.message });
+    res.json({ 
+      success: true,
+      count: reviews.length,
+      reviews 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error',
+      error: error.message 
+    });
   }
 };

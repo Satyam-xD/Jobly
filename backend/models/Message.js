@@ -1,10 +1,13 @@
-import mongoose from 'mongoose';
+import express from 'express';
+import { protect } from '../middleware/authMiddleware.js';
+import { sendMessage, getMessages } from '../controllers/messageController.js';
 
-const messageSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  job: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
-  content: { type: String, required: true }
-}, { timestamps: true });
+const router = express.Router();
 
-export default mongoose.model('Message', messageSchema);
+router.post('/', protect, sendMessage);
+router.get('/:jobId', protect, getMessages);
+router.get('/inbox', protect, (req, res) => {
+  res.json({ message: `Hello user ${req.user.id}, this is your inbox` });
+});
+
+export default router;

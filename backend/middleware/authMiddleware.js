@@ -1,11 +1,10 @@
 import jwt from 'jsonwebtoken';
 
-// Rename authMiddleware to protect or export both
 export const protect = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: 'Authentication required' });
   }
 
   try {
@@ -17,5 +16,4 @@ export const protect = (req, res, next) => {
   }
 };
 
-// Optionally, you can keep both names by adding:
- export const authMiddleware = protect;
+export const authMiddleware = protect;

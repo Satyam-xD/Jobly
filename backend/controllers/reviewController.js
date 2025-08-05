@@ -7,14 +7,18 @@ export const createReview = async (req, res) => {
     const jobId = req.params.jobId;
 
     const job = await Job.findById(jobId);
-    if (!job || job.client.toString() !== req.user._id.toString()) {
+    if (!job || job.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Unauthorized to review this job' });
+    }
+
+    if (!job.assignedFreelancer) {
+      return res.status(400).json({ message: 'No freelancer assigned to this job' });
     }
 
     const review = await Review.create({
       job: job._id,
       client: req.user._id,
-      freelancer: job.applicants[0], // assuming only one accepted applicant
+      freelancer: job.assignedFreelancer,
       rating,
       comment,
     });

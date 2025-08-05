@@ -1,23 +1,11 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+// src/components/PrivateRoute.jsx
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Fixed import path
 
-const PrivateRoute = ({ roles }) => {
-  const token = localStorage.getItem('token');
+const PrivateRoute = ({ children }) => {
+  const { currentUser } = useAuth();
   
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
-
-  try {
-    const decoded = jwtDecode(token);
-    if (roles && !roles.includes(decoded.role)) {
-      return <Navigate to="/unauthorized" />;
-    }
-    return <Outlet />;
-  } catch (err) {
-    localStorage.removeItem('token');
-    return <Navigate to="/login" />;
-  }
+  return currentUser ? children : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

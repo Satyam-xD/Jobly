@@ -1,25 +1,39 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+//src/pages/Register.jsx
+
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios'; // ✅ use the configured axios instance
 
 const Register = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'jobseeker' });
   const navigate = useNavigate();
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData);
-    navigate('/login');
+    try {
+      // ✅ corrected endpoint (base URL already includes /api)
+      await axios.post('/auth/register', form);
+      navigate('/login');
+    } catch (err) {
+      alert('Registration failed');
+      console.error('Registration Error:', err);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 max-w-md mx-auto space-y-4">
-      <input type="text" name="username" placeholder="Username" onChange={handleChange} className="w-full p-2 border" />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} className="w-full p-2 border" />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} className="w-full p-2 border" />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2">Register</button>
+    <form onSubmit={handleSubmit}>
+      <input name="name" placeholder="Name" onChange={handleChange} required />
+      <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+      <select name="role" onChange={handleChange}>
+        <option value="jobseeker">Jobseeker</option>
+        <option value="employer">Employer</option>
+      </select>
+      <button type="submit">Register</button>
     </form>
   );
 };

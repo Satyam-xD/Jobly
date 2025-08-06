@@ -1,8 +1,8 @@
+// src/context/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode"; // ✅ correct for v4.x+
-
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -23,7 +23,6 @@ export function AuthProvider({ children }) {
             logout();
           } else {
             setCurrentUser(JSON.parse(user));
-            // Auto logout when token expires
             setTimeout(logout, decoded.exp * 1000 - Date.now());
           }
         } catch (err) {
@@ -43,7 +42,7 @@ export function AuthProvider({ children }) {
         password
       });
 
-      if (res.data.success) {
+      if (res.data.token) {
         const { user, token } = res.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
@@ -62,8 +61,7 @@ export function AuthProvider({ children }) {
   const register = async (formData) => {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-
-      if (res.data.success) {
+      if (res.data.token) {
         const { user, token } = res.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
@@ -85,6 +83,34 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
     navigate('/login');
   };
+
+  // Add this function to the context value
+const checkSavedJob = async (jobId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`http://localhost:5000/api/saved-jobs/check?jobId=${jobId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return res.data.isSaved;
+  } catch (err) {
+    console.error('Error checking saved job:', err);
+    return false;
+  }
+};
+
+// Add to return value
+return (
+  <AuthContext.Provider value={{ 
+    currentUser, 
+    loading,
+    login, 
+    register, 
+    logout,
+    checkSavedJob
+  }}>
+    {!loading && children}
+  </AuthContext.Provider>
+);
 
   return (
     <AuthContext.Provider value={{ 

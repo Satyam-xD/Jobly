@@ -1,32 +1,83 @@
+//controllers/authController.js
+
+
 import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config.js';
 
-export const register = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const user = new User({ email, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: 'User registered' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+// Token generation
+const generateToken = (user) => jwt.sign(
+  { id: user._id, role: user.role },
+  JWT_SECRET,
+  { expiresIn: '7d' }
+);
 
+// Authentication functions
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'Invalid credentials' });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.status(200).json({ token, user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      token: generateToken(user)
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Login failed' });
+  }
+};
+
+export const register = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const user = await User.create({ name, email, password, role });
+    res.status(201).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      token: generateToken(user)
+    });
+  } catch (error) {
+    res.status(400).json({ message: 'Registration failed' });
+  }
+};
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch profile' });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      req.body,
+      { new: true }
+    ).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: 'Profile update failed' });
   }
 };

@@ -1,13 +1,8 @@
-import mongoose from 'mongoose';
+//config//db.js
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB Connected');
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
-};
+import dotenv from 'dotenv';
+dotenv.config();
 
-export default connectDB;
+export const PORT = process.env.PORT || 5000;
+export const MONGO_URI = process.env.MONGO_URI;
+export const JWT_SECRET = process.env.JWT_SECRET;

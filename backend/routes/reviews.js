@@ -1,3 +1,5 @@
+//routes/reviews.js
+
 import express from 'express';
 import { createReview, getReviews } from '../controllers/reviewController.js';
 

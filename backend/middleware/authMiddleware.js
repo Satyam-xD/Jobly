@@ -1,16 +1,30 @@
+//middleware/authMiddleware.js
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import { JWT_SECRET } from '../config.js';
 
-const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization');
-  if (!token) return res.status(401).json({ error: 'No token, authorization denied' });
-
+export const protect = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id;
+    let token;
+
+    // Get token from header
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({ message: 'Not authorized, no token' });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Get user from token
+    req.user = await User.findById(decoded.id).select('-password');
+    
     next();
-  } catch (err) {
-    res.status(401).json({ error: 'Token is not valid' });
+  } catch (error) {
+    console.error('Authentication error:', error);
+    res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };
-
-export default authMiddleware;

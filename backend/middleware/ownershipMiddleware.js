@@ -1,3 +1,5 @@
+//middleware/ownershipMiddleware.js
+
 const ownershipMiddleware = (model) => {
   return async (req, res, next) => {
     const resource = await model.findById(req.params.id);

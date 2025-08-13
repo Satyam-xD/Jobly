@@ -32,7 +32,7 @@ const Navbar = () => {
 
     return (
         <nav className='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm'>
-            <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-4 sm:px-6 lg:px-8'>
+            <div className='flex items-center justify-between mx-auto max-w-7xl h-20 px-4 sm:px-6 lg:px-8'>
                 <motion.div 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -40,9 +40,10 @@ const Navbar = () => {
                     className='flex items-center'
                 >
                     <Link to="/" className='flex items-center gap-1'>
-                        <h1 className='text-2xl font-bold bg-gradient-to-r from-[#F83002] to-[#6A38C2] bg-clip-text text-transparent'>
+                        <h1 className='text-3xl font-bold bg-gradient-to-r from-[#F83002] to-[#6A38C2] bg-clip-text text-transparent'>
                             Jobly
                         </h1>
+                        
                     </Link>
                 </motion.div>
 
@@ -97,7 +98,7 @@ const Navbar = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className='flex items-center gap-2 cursor-pointer'
                                 >
-                                    <Avatar className="cursor-pointer h-9 w-9 ring-2 ring-[#6A38C2] ring-offset-2">
+                                    <Avatar className="cursor-pointer h-10 w-10 ring-2 ring-[#6A38C2] ring-offset-2">
                                         <AvatarImage src={user?.profile?.profilePhoto} alt={user?.fullname} />
                                         <AvatarFallback className="bg-gradient-to-r from-[#6A38C2] to-[#F83002] text-white">
                                             {user?.fullname?.charAt(0) || 'U'}

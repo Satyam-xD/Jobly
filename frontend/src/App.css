@@ -1,0 +1,35 @@
+/* Default light theme (already in use) */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 47.4% 11.2%;
+}
+
+/* 🌙 Dark Theme */
+.dark {
+  --background: 222.2 47.4% 11.2%;
+  --foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --card: 217.2 32.6% 17.5%;
+  --card-foreground: 210 40% 98%;
+}
+
+/* 💠 Custom Blue Theme */
+.theme-blue {
+  --background: 210 60% 98%;
+  --foreground: 222.2 47.4% 11.2%;
+  --primary: 199 89% 48%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 199 50% 90%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --card: 199 50% 90%;
+  --card-foreground: 222.2 47.4% 11.2%;
+}

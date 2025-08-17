@@ -40,10 +40,9 @@ const Navbar = () => {
                     className='flex items-center'
                 >
                     <Link to="/" className='flex items-center gap-1'>
-                        <h1 className='text-3xl font-bold bg-gradient-to-r from-[#F83002] to-[#6A38C2] bg-clip-text text-transparent'>
+                        <h1 className='text-3xl font-bold gradient-text'>
                             Jobly
                         </h1>
-                        
                     </Link>
                 </motion.div>
 
@@ -52,22 +51,22 @@ const Navbar = () => {
                         {user && user.role === 'recruiter' ? (
                             <>
                                 <motion.li whileHover={{ scale: 1.05 }}>
-                                    <Link to="/admin/companies" className='text-gray-600 hover:text-[#6A38C2] transition-colors'>Companies</Link>
+                                    <Link to="/admin/companies" className='text-gray-600 hover:text-gray-800 transition-colors'>Companies</Link>
                                 </motion.li>
                                 <motion.li whileHover={{ scale: 1.05 }}>
-                                    <Link to="/admin/jobs" className='text-gray-600 hover:text-[#6A38C2] transition-colors'>Jobs</Link>
+                                    <Link to="/admin/jobs" className='text-gray-600 hover:text-gray-800 transition-colors'>Jobs</Link>
                                 </motion.li>
                             </>
                         ) : (
                             <>
                                 <motion.li whileHover={{ scale: 1.05 }}>
-                                    <Link to="/" className='text-gray-600 hover:text-[#6A38C2] transition-colors'>Home</Link>
+                                    <Link to="/" className='text-gray-600 hover:text-gray-800 transition-colors'>Home</Link>
                                 </motion.li>
                                 <motion.li whileHover={{ scale: 1.05 }}>
-                                    <Link to="/jobs" className='text-gray-600 hover:text-[#6A38C2] transition-colors'>Jobs</Link>
+                                    <Link to="/jobs" className='text-gray-600 hover:text-gray-800 transition-colors'>Jobs</Link>
                                 </motion.li>
                                 <motion.li whileHover={{ scale: 1.05 }}>
-                                    <Link to="/browse" className='text-gray-600 hover:text-[#6A38C2] transition-colors'>Browse</Link>
+                                    <Link to="/browse" className='text-gray-600 hover:text-gray-800 transition-colors'>Browse</Link>
                                 </motion.li>
                             </>
                         )}
@@ -81,12 +80,12 @@ const Navbar = () => {
                             className='flex items-center gap-3'
                         >
                             <Link to="/login">
-                                <Button variant="outline" className='border-[#6A38C2] text-[#6A38C2] hover:bg-[#6A38C2]/10'>
+                                <Button variant="outline" className='border-gray-700 text-gray-700 hover:bg-gray-100'>
                                     Login
                                 </Button>
                             </Link>
                             <Link to="/signup">
-                                <Button className="bg-gradient-to-r from-[#6A38C2] to-[#F83002] hover:from-[#5b30a6] hover:to-[#e02b02] text-white shadow-lg hover:shadow-[#6A38C2]/30">
+                                <Button className="bg-gradient-to-r from-gray-800 to-gray-600 hover:from-gray-900 hover:to-gray-700 text-white shadow-lg hover:shadow-gray-800/30">
                                     Signup
                                 </Button>
                             </Link>
@@ -98,9 +97,9 @@ const Navbar = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className='flex items-center gap-2 cursor-pointer'
                                 >
-                                    <Avatar className="cursor-pointer h-10 w-10 ring-2 ring-[#6A38C2] ring-offset-2">
+                                    <Avatar className="cursor-pointer h-10 w-10 ring-2 ring-gray-700 ring-offset-2">
                                         <AvatarImage src={user?.profile?.profilePhoto} alt={user?.fullname} />
-                                        <AvatarFallback className="bg-gradient-to-r from-[#6A38C2] to-[#F83002] text-white">
+                                        <AvatarFallback className="bg-gradient-to-r from-gray-800 to-gray-600 text-white">
                                             {user?.fullname?.charAt(0) || 'U'}
                                         </AvatarFallback>
                                     </Avatar>
@@ -112,7 +111,7 @@ const Navbar = () => {
                                     <div className='flex gap-3 items-center'>
                                         <Avatar className="h-12 w-12">
                                             <AvatarImage src={user?.profile?.profilePhoto} alt={user?.fullname} />
-                                            <AvatarFallback className="bg-gradient-to-r from-[#6A38C2] to-[#F83002] text-white">
+                                            <AvatarFallback className="bg-gradient-to-r from-gray-800 to-gray-600 text-white">
                                                 {user?.fullname?.charAt(0) || 'U'}
                                             </AvatarFallback>
                                         </Avatar>
@@ -125,7 +124,7 @@ const Navbar = () => {
                                         {user && user.role === 'student' && (
                                             <Link to="/profile">
                                                 <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700 hover:bg-gray-100">
-                                                    <User2 className="h-4 w-4 text-[#6A38C2]" />
+                                                    <User2 className="h-4 w-4 text-gray-700" />
                                                     View Profile
                                                 </Button>
                                             </Link>
@@ -135,7 +134,7 @@ const Navbar = () => {
                                             variant="ghost" 
                                             className="w-full justify-start gap-2 text-gray-700 hover:bg-gray-100"
                                         >
-                                            <LogOut className="h-4 w-4 text-[#F83002]" />
+                                            <LogOut className="h-4 w-4 text-gray-600" />
                                             Logout
                                         </Button>
                                     </div>

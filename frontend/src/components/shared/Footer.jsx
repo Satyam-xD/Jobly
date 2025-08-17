@@ -16,7 +16,7 @@ const Footer = () => {
             transition={{ duration: 0.5 }}
             className="space-y-4"
           >
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-[#F83002] to-[#6A38C2] bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold gradient-text">
               Jobly
             </h2>
             <p className="text-gray-600">

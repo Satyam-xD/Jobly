@@ -1,4 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setUser } from './redux/authSlice'
+import axios from 'axios'
+import { USER_API_END_POINT } from './utils/constant'
 import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
@@ -7,6 +12,7 @@ import Jobs from './components/Jobs'
 import Browse from './components/Browse'
 import Profile from './components/Profile'
 import JobDescription from './components/JobDescription'
+
 import Companies from './components/admin/Companies'
 import CompanyCreate from './components/admin/CompanyCreate'
 import CompanySetup from './components/admin/CompanySetup'
@@ -45,6 +51,7 @@ const appRouter = createBrowserRouter([
     path: "/profile",
     element: <Profile />
   },
+
   // admin ke liye yha se start hoga
   {
     path:"/admin/companies",
@@ -72,8 +79,8 @@ const appRouter = createBrowserRouter([
   },
 
 ])
+// App component that handles routing
 function App() {
-
   return (
     <div>
       <RouterProvider router={appRouter} />
@@ -81,4 +88,30 @@ function App() {
   )
 }
 
-export default App
+// Wrapper component that handles authentication
+function AppWrapper() {
+  const dispatch = useDispatch();
+
+  // Check for existing authentication on app startup
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get(`${USER_API_END_POINT}/me`, {
+          withCredentials: true
+        });
+        if (response.data.success) {
+          dispatch(setUser(response.data.user));
+        }
+      } catch (error) {
+        // User is not authenticated, which is fine
+        console.log('No existing authentication found');
+      }
+    };
+
+    checkAuth();
+  }, [dispatch]);
+
+  return <App />;
+}
+
+export default AppWrapper

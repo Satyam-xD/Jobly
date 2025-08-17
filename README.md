@@ -1,200 +1,241 @@
 # Jobly
 
-Full‑stack job portal where students can browse and apply to jobs, and recruiters can register companies and post jobs. Built with React (Vite) + Redux on the frontend and Node.js (Express) + MongoDB on the backend. Includes authentication, file uploads (Cloudinary), admin dashboards, and a "Save for Later" feature.
+A modern, feature-rich job portal built with React, Node.js, and MongoDB. This application connects job seekers with employers, providing a seamless platform for job searching, application management, and company administration.
 
-## ✨ Features
+## 🚀 Features
 
-- Authentication with httpOnly JWT cookies (login, signup, logout)
-- Profile management with resume upload (Cloudinary)
-- Recruiter company management (register, update, logo upload)
-- Job posting by recruiters; job browsing/searching by students
-- Apply to job; view applied jobs; recruiter can view applicants and update status
-- Save for later (bookmark) jobs
-- Admin-protected routes for recruiter dashboards
-- Responsive UI with Tailwind CSS, Radix UI, framer‑motion, and sonner toasts
+### For Job Seekers
+- **User Authentication**: Secure login/signup with JWT tokens
+- **Job Browsing**: Browse and search through available job listings
+- **Job Applications**: Apply to jobs with a streamlined application process
+- **Profile Management**: Update personal information and track applications
+- **Responsive Design**: Mobile-friendly interface for all devices
 
-## 🧱 Tech Stack
+### For Employers/Recruiters
+- **Company Management**: Create and manage company profiles
+- **Job Posting**: Post new job opportunities with detailed descriptions
+- **Application Tracking**: View and manage job applications
+- **Admin Dashboard**: Comprehensive admin panel for business operations
+- **Applicant Management**: Review and manage candidate applications
 
-- Frontend: React 18, Vite, Redux Toolkit, Redux Persist, Tailwind CSS, Radix UI, framer‑motion, axios
-- Backend: Node.js, Express, Mongoose, JWT, Multer, Cloudinary
-- Database: MongoDB
+### General Features
+- **Real-time Updates**: Live job listings and application status
+- **Search & Filter**: Advanced filtering and search capabilities
+- **File Upload**: Support for resume and document uploads via Cloudinary
+- **Responsive UI**: Modern, intuitive interface built with Tailwind CSS
+- **State Management**: Redux-powered state management for seamless user experience
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** - Modern React with hooks and functional components
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Redux Toolkit** - State management with Redux
+- **React Router** - Client-side routing
+- **Radix UI** - Accessible UI components
+- **Framer Motion** - Animation library
+- **Axios** - HTTP client for API calls
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - MongoDB object modeling
+- **JWT** - JSON Web Token authentication
+- **Bcrypt** - Password hashing
+- **Multer** - File upload handling
+- **Cloudinary** - Cloud image and file management
+- **CORS** - Cross-origin resource sharing
 
 ## 📁 Project Structure
 
 ```
-Joblynew/
-  backend/
-    controllers/
-    middlewares/
-    models/
-    routes/
-    utils/
-    index.js
-    package.json
-  frontend/
-    src/
-      components/
-      hooks/
-      redux/
-      utils/
-      main.jsx, App.jsx
-    index.html
-    package.json
-  README.md
+ frontend/                 # React frontend application
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   │   ├── admin/       # Admin-specific components
+│   │   │   ├── auth/        # Authentication components
+│   │   │   ├── shared/      # Reusable UI components
+│   │   │   └── ui/          # UI component library
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── redux/           # Redux store and slices
+│   │   └── utils/           # Utility functions
+│   ├── package.json
+│   └── vite.config.js
+backend/                  # Node.js backend application
+│   ├── controllers/         # Route controllers
+│   ├── models/              # Database models
+│   ├── routes/              # API routes
+│   ├── middlewares/         # Custom middleware
+│   ├── utils/               # Utility functions
+│   └── package.json
+└── README.md
 ```
-
-## ⚙️ Prerequisites
-
-- Node.js 18+ (v20+ recommended)
-- A MongoDB connection string
-- Cloudinary account (for file uploads)
-
-## 🔐 Environment Variables (Backend)
-
-Create `backend/.env`:
-
-```
-PORT=3000              # or 8000 – must match frontend constants
-MONGO_URI=your_mongodb_connection_string
-SECRET_KEY=your_jwt_secret
-
-CLOUD_NAME=your_cloudinary_cloud_name
-API_KEY=your_cloudinary_api_key
-API_SECRET=your_cloudinary_api_secret
-```
-
-Notes:
-- Cookies are set with `httpOnly` and `sameSite='strict'`. Ensure your frontend origin is in backend CORS.
-- CORS is configured to allow `http://localhost:5173` (and optionally `http://localhost:5174`).
-
-## 🧩 Frontend API Constants
-
-Update `frontend/src/utils/constant.js` to point to your backend:
-
-```js
-export const USER_API_END_POINT = "http://localhost:3000/api/v1/user";
-export const JOB_API_END_POINT = "http://localhost:3000/api/v1/job";
-export const APPLICATION_API_END_POINT = "http://localhost:3000/api/v1/application";
-export const COMPANY_API_END_POINT = "http://localhost:3000/api/v1/company";
-```
-
-If your backend runs on `8000`, change `3000` to `8000` and ensure backend CORS allows your Vite origin.
 
 ## 🚀 Getting Started
 
-1) Install dependencies
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB (local or cloud instance)
+- npm or yarn package manager
 
-```bash
-cd backend && npm install
-cd ../frontend && npm install
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   
+   # Create .env file with your configuration
+   cp .env.example .env
+   
+   # Update .env with your values
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+   CLOUDINARY_API_KEY=your_cloudinary_key
+   CLOUDINARY_API_SECRET=your_cloudinary_secret
+   PORT=8000
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+4. **Start Development Servers**
+
+   **Backend:**
+   ```bash
+   cd backend
+   npm run dev
+   ```
+   Server will start at http://localhost:8000
+
+   **Frontend:**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+   Application will start at http://localhost:5173
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the backend directory with the following variables:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/jobportal
+JWT_SECRET=your_super_secret_jwt_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+PORT=8000
 ```
 
-2) Start backend
+## 📱 Available Scripts
 
-```bash
-cd backend
-npm run dev
-# should print: Server running at port <PORT> and mongodb connected successfully
-```
+### Backend
+- `npm run dev` - Start development server with nodemon
+- `npm start` - Start production server
 
-3) Start frontend
+### Frontend
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-```bash
-cd frontend
-npm run dev
-# opens Vite at http://localhost:5173 (or 5174 if 5173 is in use)
-```
+## 🌐 API Endpoints
 
-## 🔑 Authentication
+### Authentication
+- `POST /api/v1/user/register` - User registration
+- `POST /api/v1/user/login` - User login
+- `GET /api/v1/user/me` - Get current user profile
+- `PUT /api/v1/user/update` - Update user profile
 
-- Login sets an httpOnly cookie named `token`. Use `withCredentials: true` in axios requests from the frontend.
-- Example axios usage:
+### Jobs
+- `GET /api/v1/job/all` - Get all jobs
+- `POST /api/v1/job/create` - Create new job (admin only)
+- `GET /api/v1/job/:id` - Get job by ID
+- `PUT /api/v1/job/:id` - Update job (admin only)
+- `DELETE /api/v1/job/:id` - Delete job (admin only)
 
-```js
-await axios.post(`${USER_API_END_POINT}/login`, body, {
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-});
-```
+### Companies
+- `GET /api/v1/company/all` - Get all companies
+- `POST /api/v1/company/create` - Create company (admin only)
+- `GET /api/v1/company/:id` - Get company by ID
+- `PUT /api/v1/company/:id` - Update company (admin only)
 
-## 📚 API Overview (selected)
+### Applications
+- `POST /api/v1/application/apply` - Apply for a job
+- `GET /api/v1/application/applied` - Get user's applied jobs
+- `GET /api/v1/application/:jobId/applicants` - Get job applicants (admin only)
 
-- Auth (`/api/v1/user`)
-  - POST `/register` – multipart form with `file` (optional profile photo)
-  - POST `/login` – `{ email, password, role }`
-  - GET `/logout`
-  - POST `/profile/update` – multipart form; resume `file` optional
-  - POST `/saved/toggle` – `{ jobId }` save/unsave a job
-  - GET `/saved` – list saved jobs for current user
+## 🔐 Authentication & Authorization
 
-- Companies (`/api/v1/company`) [recruiter]
-  - POST `/register`
-  - GET `/get`
-  - GET `/get/:id`
-  - PUT `/update/:id` – multipart form; `file` optional for logo
+The application uses JWT tokens stored in HTTP-only cookies for secure authentication. Protected routes require valid authentication tokens, and admin routes require the user to have a 'recruiter' role.
 
-- Jobs (`/api/v1/job`)
-  - POST `/post` [recruiter]
-  - GET `/get?keyword=...` [student] – currently protected; remove auth if you want public browsing
-  - GET `/get/:id`
-  - GET `/getadminjobs` [recruiter]
+## 🎨 UI Components
 
-- Applications (`/api/v1/application`)
-  - GET `/apply/:id` – student applies to job
-  - GET `/get` – student’s applied jobs
-  - GET `/:id/applicants` – recruiter: list applicants for a job
-  - POST `/status/:id/update` – recruiter: update application status to `accepted|rejected|pending`
+The application includes a comprehensive UI component library built with:
+- **Radix UI** - Accessible, unstyled components
+- **Tailwind CSS** - Utility-first styling
+- **Custom Components** - Reusable, styled components
+- **Responsive Design** - Mobile-first approach
 
-## 🧠 Important Implementation Details
+## 📊 State Management
 
-- Multer uses in‑memory storage and expects file field name `file`.
-- Cloudinary uploads return a URL that is saved in the database for photos/logos/resumes.
-- "Save for later" stores an array of job ObjectIds on the `User` (`savedJobs`).
-- Admin routes are protected via `ProtectedRoute` in the frontend and `isAuthenticated` middleware in the backend.
+Redux Toolkit is used for state management with the following slices:
+- **authSlice** - User authentication state
+- **jobSlice** - Job-related state
+- **companySlice** - Company-related state
+- **applicationSlice** - Job application state
 
-## 🧪 Common Pitfalls & Troubleshooting
+## 🚀 Deployment
 
-- Port already in use (Windows):
-  - Check which PID uses the port:
-    ```bash
-    netstat -ano | findstr :3000
-    ```
-  - Kill the process:
-    ```bash
-    taskkill /PID <PID> /F
-    ```
+### Backend Deployment
+1. Set production environment variables
+2. Build the application: `npm run build`
+3. Deploy to your preferred hosting service (Heroku, Vercel, AWS, etc.)
 
-- 401 Unauthorized when calling APIs:
-  - Ensure `withCredentials: true` in axios
-  - Ensure backend CORS has your Vite origin and `credentials: true`
-  - Cookies set as `httpOnly` + `sameSite: 'strict'` – browser must be at the allowed origin
+### Frontend Deployment
+1. Build the application: `npm run build`
+2. Deploy the `dist` folder to your hosting service
+3. Update API endpoints for production
 
-- Job browsing returns empty or 401:
-  - The `/api/v1/job/get` route is protected. Either log in as a student, or remove auth on that route if you want it public.
+## 🤝 Contributing
 
-## 🧪 Scripts
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -m 'Add feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
 
-- Backend
-  - `npm run dev` – start backend with nodemon
+## 📝 License
 
-- Frontend
-  - `npm run dev` – start Vite dev server
-  - `npm run build` – build production assets
-  - `npm run preview` – preview production build
+This project is licensed under the ISC License.
 
-## 🛡️ Security Notes
+## 🆘 Support
 
-- Secrets must live in environment variables; do not commit `.env`
-- JWT cookies are httpOnly. Keep CORS origins limited to known dev domains.
+If you encounter any issues or have questions:
+1. Check the existing issues
+2. Create a new issue with detailed information
+3. Contact the development team
 
-## 📦 Deployment (brief)
+## 🙏 Acknowledgments
 
-- Backend: host on a Node platform (e.g., Render/Heroku/Vercel Functions) with environment variables set and MongoDB accessible.
-- Frontend: build with `npm run build` and host the `dist/` output (e.g., Vercel/Netlify). Update frontend API constants to your deployed backend URL.
-- Update backend CORS to include your deployed frontend origin(s).
+- React team for the amazing framework
+- Tailwind CSS for the utility-first approach
+- MongoDB for the flexible database solution
+- All contributors and maintainers
 
-## 📄 License
+---
 
-MIT
-
-
+**Happy Job Hunting! 🎯**

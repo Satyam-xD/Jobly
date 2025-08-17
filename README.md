@@ -80,23 +80,59 @@ backend/                  # Node.js backend application
 - MongoDB (local or cloud instance)
 - npm or yarn package manager
 
-### Installation
+# Joblynew
+
+A modern, feature-rich job portal built with React, Node.js, and MongoDB. This application connects job seekers with employers, providing a seamless platform for job searching, application management, and company administration.
+
+## 🚀 Features
+
+**For Job Seekers**
+- Secure authentication (JWT)
+- Browse/search jobs
+- Apply for jobs
+- Profile management
+- Responsive design
+
+**For Employers/Recruiters**
+- Company management
+- Job posting
+- Application tracking
+- Admin dashboard
+- Applicant management
+
+**General**
+- Real-time updates
+- Advanced search & filter
+- Resume/document upload (Cloudinary)
+- Modern UI (Tailwind CSS)
+- State management (Redux Toolkit)
+
+## 🛠️ Tech Stack
+
+**Frontend:** React 18, Vite, Tailwind CSS, Redux Toolkit, React Router, Radix UI, Framer Motion, Axios  
+**Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Bcrypt, Multer, Cloudinary, CORS
+
+## 📁 Project Structure
+
+```
+frontend/   # React app
+backend/    # Node.js API
+README.md
+```
+
+## 🏁 Getting Started
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   
+   git clone https://github.com/Satyam-xD/Jobly.git
+   cd Joblynew
    ```
 
 2. **Backend Setup**
    ```bash
    cd backend
    npm install
-   
-   # Create .env file with your configuration
-   cp .env.example .env
-   
-   # Update .env with your values
+   # Create .env and configure:
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    CLOUDINARY_CLOUD_NAME=your_cloudinary_name
@@ -112,15 +148,79 @@ backend/                  # Node.js backend application
    ```
 
 4. **Start Development Servers**
+   - Backend: `npm run dev` (http://localhost:8000)
+   - Frontend: `npm run dev` (http://localhost:5173)
 
-   **Backend:**
-   ```bash
-   cd backend
-   npm run dev
-   ```
-   Server will start at http://localhost:8000
+## 🌐 API Endpoints
 
-   **Frontend:**
+**Authentication**
+- `POST /api/v1/user/register` - Register
+- `POST /api/v1/user/login` - Login
+- `GET /api/v1/user/me` - Profile
+- `PUT /api/v1/user/update` - Update profile
+
+**Jobs**
+- `GET /api/v1/job/all` - All jobs
+- `POST /api/v1/job/create` - Create job (admin)
+- `GET /api/v1/job/:id` - Job by ID
+- `PUT /api/v1/job/:id` - Update job (admin)
+- `DELETE /api/v1/job/:id` - Delete job (admin)
+
+**Companies**
+- `GET /api/v1/company/all` - All companies
+- `POST /api/v1/company/create` - Create company (admin)
+- `GET /api/v1/company/:id` - Company by ID
+- `PUT /api/v1/company/:id` - Update company (admin)
+
+**Applications**
+- `POST /api/v1/application/apply` - Apply for job
+- `GET /api/v1/application/applied` - User’s applied jobs
+- `GET /api/v1/application/:jobId/applicants` - Job applicants (admin)
+
+## 🔐 Authentication & Authorization
+
+JWT tokens (HTTP-only cookies) secure authentication. Admin routes require recruiter role.
+
+## 🎨 UI Components
+
+Built with Radix UI, Tailwind CSS, and custom components. Mobile-first, accessible, and reusable.
+
+## 📊 State Management
+
+Redux Toolkit slices:
+- `authSlice` (auth)
+- `jobSlice` (jobs)
+- `companySlice` (companies)
+- `applicationSlice` (applications)
+
+## 🚀 Deployment
+
+- Backend: Set env vars, build, deploy (Heroku, Render, etc.)
+- Frontend: Build, deploy `dist` (Vercel, Netlify, etc.)
+
+## 🤝 Contributing
+
+1. Fork & branch
+2. Commit & push
+3. Open a pull request
+
+## 📝 License
+
+ISC License
+
+## 🆘 Support
+
+- Check issues
+- Open a new issue
+- Contact maintainers
+
+## 🙏 Acknowledgments
+
+- React, Tailwind CSS, MongoDB, and all contributors
+
+---
+
+**Happy Job Hunting! 🎯**
    ```bash
    cd frontend
    npm run dev
